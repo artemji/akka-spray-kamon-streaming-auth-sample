@@ -48,17 +48,18 @@ class TrackerActor(uri: Uri,
                    query: String,
                    ioActor: ActorRef)(implicit twitterAuthorization: TwitterAuthorization) extends Actor with ActorLogging {
 
-  implicit val executor = context.dispatcher.asInstanceOf[Executor with ExecutionContext]
+  private implicit val executor = context.dispatcher.asInstanceOf[Executor with ExecutionContext]
 
-  val statisticActor = context.actorOf(Props[StatisticActor])
+  private val statisticActor = context.actorOf(Props[StatisticActor])
 
-  val searchStreamRequest = Get(uri.withQuery("track" -> query)) ~> twitterAuthorization.authorize
+  private val startTime: Double = System.currentTimeMillis / 1000.0
 
-  val startTime: Double = System.currentTimeMillis / 1000.0
+  private def currentTime(): Double = System.currentTimeMillis / 1000.0
 
-  def currentTime(): Double = System.currentTimeMillis / 1000.0
-
-  sendTo(ioActor).withResponsesReceivedBy(self)(searchStreamRequest)
+  override def preStart(): Unit = {
+    val searchRequest = Get(uri.withQuery("track" -> query)) ~> twitterAuthorization.authorize
+    sendTo(ioActor).withResponsesReceivedBy(self)(searchRequest)
+  }
 
   override def receive = collectingChunks(partialContent = "")
 

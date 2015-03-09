@@ -35,9 +35,10 @@ object TwitterAggregatorActor {
  */
 class TwitterAggregatorActor(uri: Uri,
                              ioActor: ActorRef)(implicit twitterAuthorization: TwitterAuthorization) extends Actor with ActorLogging {
-  implicit val executor = context.dispatcher.asInstanceOf[Executor with ExecutionContext]
 
-  var reqNo = 0
+  private implicit val executor = context.dispatcher.asInstanceOf[Executor with ExecutionContext]
+
+  private var reqNo = 0
 
   override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy(loggingEnabled = false /* too verbose when connection lost */) {
     case _: ConnectionError => SupervisorStrategy.Restart

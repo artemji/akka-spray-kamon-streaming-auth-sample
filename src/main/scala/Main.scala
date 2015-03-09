@@ -100,9 +100,9 @@ object Main {
           stat => println(
             s"""
                |Streamer: ${stat.actorName}
-                |Query: ${stat.streamerStatistic.query}
-                |TotalTweets: ${stat.streamerStatistic.twitterStatistic.totalTweets}
-                |Tweets Per Second: ${stat.streamerStatistic.twitterStatistic.tweetsPerSecond}
+                |Query: ${stat.trackerStatistics.query}
+                |TotalTweets: ${stat.trackerStatistics.twitterStatistic.totalTweets}
+                |Tweets Per Second: ${stat.trackerStatistics.twitterStatistic.tweetsPerSecond}
             """.stripMargin
           )
         }

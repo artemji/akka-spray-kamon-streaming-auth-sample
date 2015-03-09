@@ -4,4 +4,4 @@ case class TwitterStatistics(totalTweets: Int, tweetsPerSecond: Double)
 
 case class TrackerStatistics(query: String, twitterStatistic: TwitterStatistics)
 
-case class TwitterAggregatorStatistics(actorName: String, streamerStatistic: TrackerStatistics)
+case class TwitterAggregatorStatistics(actorName: String, trackerStatistics: TrackerStatistics)
